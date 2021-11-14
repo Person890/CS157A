@@ -13,11 +13,19 @@ public class Driver {
             Statement statement = connection.createStatement();
 
 //            15 different functionalities
-            ResultSet resultSet = statement.executeQuery("select * from CUSTOMER");
-
+//            view menu
+            ResultSet resultSet = statement.executeQuery("select * from CoffeeSelection");
+            System.out.println("View menu:");
+            System.out.println("Drink \t Size \t Price \t");
             while (resultSet.next()){
-                System.out.println(resultSet.getInt("id"));
+                System.out.println(resultSet.getString("drink") + "\t"
+                        + resultSet.getString("size") + "\t" +
+                        resultSet.getString("price"));
             }
+
+//
+//            resultSet = statement.executeQuery("insert values into  ");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
