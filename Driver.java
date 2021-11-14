@@ -6,7 +6,9 @@ import java.sql.Statement;
 public class Driver {
     public static void main(String[] args) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cafe", "root", "skakalpes");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cafe", 
+//             you must add your connection details here (username and password)
+            );
 
             Statement statement = connection.createStatement();
 
