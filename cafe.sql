@@ -53,6 +53,7 @@ CREATE TABLE TRANSACTION
   transactionID INT AUTO_INCREMENT,
   employeeID INT,
   customer VARCHAR(50),
+  size VARCHAR(50),
   drinkOrder VARCHAR(50),
   total FLOAT,
   updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -70,6 +71,15 @@ CREATE TABLE TRANSACTION
   /*FOREIGN KEY (total) REFERENCES COFFEESELECTION (price)*/
 );
 ALTER TABLE TRANSACTION AUTO_INCREMENT = 1001;
+
+DROP TRIGGER IF EXISTS StockUpdateTrigger;
+CREATE TRIGGER StockUpdateTrigger
+  AFTER INSERT ON TRANSACTION
+  FOR EACH ROW
+  UPDATE COFFEESELECTION
+  SET STOCK = STOCK - 1
+  WHERE COFFEESELECTION.drink = NEW.drinkOrder AND COFFEESELECTION.size = NEW.size;
+
 
 /* Employees */
 INSERT INTO EMPLOYEE (name, position, salary) VALUES ('Paul', 'barista', 18.50);
@@ -129,8 +139,8 @@ INSERT INTO CUSTOMER VALUES ('Erik', 'black');
 INSERT INTO CUSTOMER VALUES ('Sunny', 'latte');
 
 /* Transactions */
-INSERT INTO TRANSACTION (employeeID, customer, drinkOrder, total) VALUES (101, 'Sandra', 'latte', 4.50);
-INSERT INTO TRANSACTION (employeeID, customer, drinkOrder, total) VALUES (102, 'Bob', 'black', 3.50);
-INSERT INTO TRANSACTION (employeeID, customer, drinkOrder, total) VALUES (103, 'Tony', 'mocha', 4.50);
-INSERT INTO TRANSACTION (employeeID, customer, drinkOrder, total) VALUES (102, 'Karen', 'flat white', 5.50);
-INSERT INTO TRANSACTION (employeeID, customer, drinkOrder, total) VALUES (104, 'Erik', 'latte', 4.50);
+INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (101, 'Sandra', 'medium', 'latte', 4.50);
+INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (102, 'Bob', 'medium', 'black', 3.50);
+INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (103, 'Tony', 'small', 'mocha', 4.50);
+INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (102, 'Karen', 'large', 'flat white', 5.50);
+INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (104, 'Erik', 'medium', 'latte', 4.50);
