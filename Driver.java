@@ -52,4 +52,37 @@ public class Driver {
             e.printStackTrace();
         }
     }
+     public static void archive(){
+        Statement statement1 = null;
+        ResultSet result = null;
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cafe",
+                    "root", "skakalpes");
+
+            String statement = "CALL ARCHIVEDTRANSACTION(?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setString(1, "2021-12-05 00:00:00");
+            boolean result1 = preparedStatement.execute();
+
+            if(!result1){
+                System.out.println("There was an issue with the statement");
+            }
+        }
+        catch (SQLException sl){
+            sl.printStackTrace();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try{
+                if(statement1 != null){
+                    statement1.close();
+                }
+
+            }catch(SQLException sl2){
+
+            }
+        }
+    }
 }
