@@ -144,3 +144,25 @@ INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (
 INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (103, 'Tony', 'small', 'mocha', 4.50);
 INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (102, 'Karen', 'large', 'flat white', 5.50);
 INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (104, 'Erik', 'medium', 'latte', 4.50);
+
+CREATE PROCEDURE STORED_TRANSACTION
+AS
+CREATE TABLE IF NOT EXISTS ARCHIVEDTRANSACTION (
+  transactionID INT AUTO_INCREMENT,
+  employeeID INT,
+  customer VARCHAR(50),
+  size VARCHAR(50),
+  drinkOrder VARCHAR(50),
+  total FLOAT,
+  updatedAt TIMESTAMP
+);
+
+INSERT INTO ARCHIVEDTRANSACTION
+SELECT *
+FROM TRANSACTION
+WHERE DATE(updatedAt) < '2021-11-30';
+
+DELETE FROM TRANSACTION
+WHERE DATE(updatedAt) < '2021-11-30';
+
+GO;
