@@ -145,24 +145,25 @@ INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (
 INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (102, 'Karen', 'large', 'flat white', 5.50);
 INSERT INTO TRANSACTION (employeeID, customer, size, drinkOrder, total) VALUES (104, 'Erik', 'medium', 'latte', 4.50);
 
-CREATE PROCEDURE STORED_TRANSACTION (IN cutoff_date DATE)
-AS
-BEGIN
-CREATE TABLE IF NOT EXISTS ARCHIVEDTRANSACTION (
-  transactionID INT AUTO_INCREMENT,
+DROP TABLE IF EXISTS ARCHIVEDTRANSACTION;
+CREATE TABLE ARCHIVEDTRANSACTION (
+  transactionID INT ,
   employeeID INT,
   customer VARCHAR(50),
   size VARCHAR(50),
   drinkOrder VARCHAR(50),
   total FLOAT,
   updatedAt TIMESTAMP
-)
+);
 
-INSERT INTO ARCHIVEDTRANSACTION
+DROP PROCEDURE IF EXISTS STORED_TRANSACTION;
+DELIMITER //
+CREATE PROCEDURE STORED_TRANSACTION (IN cut_offdate DATE)
+BEGIN
+INSERT INTO ARCHIVEDTRANSACTION (
 SELECT *
 FROM TRANSACTION
-WHERE DATE(updatedAt) < cutoff_date
-
+WHERE DATE(updatedAt) < cut_offdate);
 DELETE FROM TRANSACTION
-WHERE DATE(updatedAt) < cutoff_date
+WHERE DATE(updatedAt) < cut_offdate;
 END;
